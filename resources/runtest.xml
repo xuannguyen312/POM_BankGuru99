@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="Suite" parallel="false"  thread-count="3">
+
+  <test name="Test">
+    <parameter name="browser" value="firefox" />
+    <classes>
+      <class name="com.bankguru99.payment.Global_Register_New_Account"/>
+      <class name="com.bankguru99.payment.Payment_01_Customer"/>
+    </classes>
+  </test> <!-- Test -->
+</suite> <!-- Suite -->
