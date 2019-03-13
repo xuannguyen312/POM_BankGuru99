@@ -11,9 +11,11 @@ import pageObjects.NewAccountPageObject;
 import pageObjects.NewCustomerPageObject;
 import pageObjects.PageFactoryManager;
 import pageObjects.RegisterPageObject;
+import pageObjects.WithDrawalPageObject;
 import pageUIs.AbstractPageUI;
 import pageUIs.DepositPageUI;
 import pageUIs.NewAccountPageUI;
+import pageUIs.WithDrawalPageUI;
 
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
@@ -32,7 +34,7 @@ public class Payment_01_Customer extends AbstractTest {
   
   private String email, USER_ID, PASSWORD,password_ID, customerName, gender, dateOfBirth, address, city, state, pin, phone, dateOfBirthExpected, genderValue, customerID;
   private String descriptionValue, accountID; 
-  private int currentBalanceActual;
+  private int currentBalanceActual,currentBalanceActual_Withdraw;
   private int currentAmount;
   
   private LoginPageObject loginPage;
@@ -42,6 +44,7 @@ public class Payment_01_Customer extends AbstractTest {
   private EditCustomerPageObject editCustomerPage;
   private NewAccountPageObject newAccountPage;
   private DepositPageObject depositPage;
+  private WithDrawalPageObject withDrawalPage;
   
 	
   @Parameters("browser")
@@ -182,12 +185,36 @@ public class Payment_01_Customer extends AbstractTest {
 	  depositPage.clickToDynamicButton(driver, "AccSubmit");
 	  
 	  // Xác nhận transfer thành công
-	  verifyTrue(depositPage.isTransactionPageDisplay());
+	  verifyTrue(depositPage.isDynamicPageOrMessageDisplayedID(driver, accountID ));
 	  Thread.sleep(2000);
+	  
 	  
 	  // Kiểm tra Current Balance
 	 currentBalanceActual = Integer.parseInt(depositPage.getDynamicTextInTable(driver, "Current Balance"));
 	 depositPage.compareAmount(DepositPageUI.AMOUNT_VALUE, NewAccountPageUI.INIDEPOSIT_VALUE, currentBalanceActual);
+  }
+  
+  @Test
+  public void Payment_06_Transfer_On_WithDrawal_Page() throws InterruptedException{
+	  // Chuyển trang từ Deposit sang Withdraw Page
+	  withDrawalPage = (WithDrawalPageObject) depositPage.openDynamicPage(driver, "Withdrawal");
+	  verifyTrue(withDrawalPage.isDynamicPageOrMessageDisplayed(driver, "Amount Withdrawal Form"));
+	  
+	  // Nhập Amount Value để transfer
+	  withDrawalPage.inputToDynamicTextbox(driver, "accountno", accountID);
+	  withDrawalPage.inputToDynamicTextbox(driver, "ammount", WithDrawalPageUI.AMOUNT_VALUE);
+	  withDrawalPage.inputToDynamicTextbox(driver, "desc", WithDrawalPageUI.DESCRIPTION_VALUE);
+	  Thread.sleep(2000);
+	  withDrawalPage.clickToDynamicButton(driver, "AccSubmit");
+	  
+	  // Xác nhận transfer thành công
+	  verifyTrue(withDrawalPage.isDynamicPageOrMessageDisplayedID2(driver, accountID ));
+	  Thread.sleep(2000);
+	  
+	  
+	  // Kiểm tra Current Balance
+	  currentBalanceActual_Withdraw = Integer.parseInt(withDrawalPage.getDynamicTextInTable(driver, "Current Balance"));
+	 withDrawalPage.compareAmount(currentBalanceActual, WithDrawalPageUI.AMOUNT_VALUE, currentBalanceActual_Withdraw);
   }
   
   

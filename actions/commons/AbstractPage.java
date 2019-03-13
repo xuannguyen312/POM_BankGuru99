@@ -153,6 +153,8 @@ public class AbstractPage {
 			return PageFactoryManager.getNewAccountPage(driver);
 		case "Edit Customer":
 			return PageFactoryManager.getEditCustomerPage(driver);
+		case "Withdrawal":
+			return PageFactoryManager.getWithDrawalPage(driver);
 			default:
 				return PageFactoryManager.getHomePage(driver);
 		}
@@ -188,6 +190,16 @@ public class AbstractPage {
 	public boolean isDynamicPageOrMessageDisplayed(WebDriver driver, String pageHeadingName) {
 		waitToElementVisible(driver, AbstractPageUI.DYNAMIC_PAGE_HEADING_NAME, pageHeadingName);
 		return isControlDisplay(driver, AbstractPageUI.DYNAMIC_PAGE_HEADING_NAME, pageHeadingName);
+	}
+	
+	public boolean isDynamicPageOrMessageDisplayedID(WebDriver driver, String accountID) {
+		waitToElementVisible(driver, AbstractPageUI.HEADER_TRANSFER_TEXT, accountID);
+		return isControlDisplay(driver, AbstractPageUI.HEADER_TRANSFER_TEXT, accountID);
+	}
+	
+	public boolean isDynamicPageOrMessageDisplayedID2(WebDriver driver, String accountID) {
+		waitToElementVisible(driver, AbstractPageUI.HEADER_TRANSFER_TEXT_2, accountID);
+		return isControlDisplay(driver, AbstractPageUI.HEADER_TRANSFER_TEXT_2, accountID);
 	}
 	
 	public String getDynamicTextInTable(WebDriver driver, String rowName)

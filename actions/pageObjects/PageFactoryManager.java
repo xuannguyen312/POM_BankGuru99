@@ -35,5 +35,9 @@ public class PageFactoryManager {
 	public static EditCustomerPageObject getEditCustomerPage(WebDriver driver) {
 		return new EditCustomerPageObject(driver);
 	}
+	
+	public static WithDrawalPageObject getWithDrawalPage(WebDriver driver) {
+		return new WithDrawalPageObject(driver);
+	}
 
 }

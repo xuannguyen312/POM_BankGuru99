@@ -13,4 +13,9 @@ public class AbstractPageUI {
 	
 	public static final String DYNAMIC_TABLE_ROW_NAME = "//td[text()='%s']/following-sibling::td";
 
+	public static final String HEADER_TRANSFER_TEXT = "//p[@class = 'heading3' and contains(text(),'Transaction details of Deposit for Account') and contains(text(),'%s')]";
+	
+	public static final String HEADER_TRANSFER_TEXT_2 = "//p[@class = 'heading3' and contains(text(),'Transaction details of Withdrawal for Account') and contains(text(),'%s')]";
+	
+	
 }
