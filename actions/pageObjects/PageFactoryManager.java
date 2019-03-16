@@ -39,5 +39,9 @@ public class PageFactoryManager {
 	public static WithDrawalPageObject getWithDrawalPage(WebDriver driver) {
 		return new WithDrawalPageObject(driver);
 	}
-
+	
+	
+	public static FundTransferPageObject getFundTransferPage(WebDriver driver) {
+		return new FundTransferPageObject(driver);
+	}
 }

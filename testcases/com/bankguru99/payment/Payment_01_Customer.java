@@ -5,6 +5,7 @@ import org.testng.annotations.Test;
 import commons.AbstractTest;
 import pageObjects.DepositPageObject;
 import pageObjects.EditCustomerPageObject;
+import pageObjects.FundTransferPageObject;
 import pageObjects.HomePageObject;
 import pageObjects.LoginPageObject;
 import pageObjects.NewAccountPageObject;
@@ -14,6 +15,7 @@ import pageObjects.RegisterPageObject;
 import pageObjects.WithDrawalPageObject;
 import pageUIs.AbstractPageUI;
 import pageUIs.DepositPageUI;
+import pageUIs.FundTransferPageUI;
 import pageUIs.NewAccountPageUI;
 import pageUIs.WithDrawalPageUI;
 
@@ -33,7 +35,7 @@ public class Payment_01_Customer extends AbstractTest {
   WebDriver driver;
   
   private String email, USER_ID, PASSWORD,password_ID, customerName, gender, dateOfBirth, address, city, state, pin, phone, dateOfBirthExpected, genderValue, customerID;
-  private String descriptionValue, accountID; 
+  private String descriptionValue, accountID, accountID2 ; 
   private int currentBalanceActual,currentBalanceActual_Withdraw;
   private int currentAmount;
   
@@ -45,6 +47,7 @@ public class Payment_01_Customer extends AbstractTest {
   private NewAccountPageObject newAccountPage;
   private DepositPageObject depositPage;
   private WithDrawalPageObject withDrawalPage;
+  private FundTransferPageObject fundTransferPage;
   
 	
   @Parameters("browser")
@@ -215,6 +218,46 @@ public class Payment_01_Customer extends AbstractTest {
 	  // Kiểm tra Current Balance
 	  currentBalanceActual_Withdraw = Integer.parseInt(withDrawalPage.getDynamicTextInTable(driver, "Current Balance"));
 	 withDrawalPage.compareAmount(currentBalanceActual, WithDrawalPageUI.AMOUNT_VALUE, currentBalanceActual_Withdraw);
+  }
+  
+  @Test
+  public void Payment_07_Transfer_Amount() throws InterruptedException{
+	  newAccountPage = (NewAccountPageObject) withDrawalPage.openDynamicPage(driver, "New Account");
+	  verifyTrue(newAccountPage.isDynamicPageOrMessageDisplayed(driver, "Add new account form"));
+		 
+	  // Tạo New Account 
+	  newAccountPage.inputToDynamicTextbox(driver, "cusid", customerID);
+	  newAccountPage.selectOnDropDown("Current");
+	  newAccountPage.inputToDynamicTextbox(driver, "inideposit", NewAccountPageUI.INIDEPOSIT_VALUE);
+	  Thread.sleep(2000);
+	  newAccountPage.clickToDynamicButton(driver, "button2");
+	  
+	  //Xác định tạo New Account thành công
+	  verifyTrue(newAccountPage.isDynamicPageOrMessageDisplayed(driver, "Account Generated Successfully!!!"));
+	  Thread.sleep(2000);
+	  
+	  accountID2 = newAccountPage.getDynamicTextInTable(driver, "Account ID");
+  
+	  
+	// Chuyển trang từ WithDraw sang Fund Transfer Page
+	fundTransferPage = (FundTransferPageObject) newAccountPage.openDynamicPage(driver, "Fund Transfer");
+	verifyTrue(fundTransferPage.isDynamicPageOrMessageDisplayed(driver, "Fund transfer"));
+	
+	//Nhập value vào các fields
+	fundTransferPage.inputToDynamicTextbox(driver, "payersaccount", accountID);
+	fundTransferPage.inputToDynamicTextbox(driver, "payeeaccount", accountID2);
+	fundTransferPage.inputToDynamicTextbox(driver, "ammount", FundTransferPageUI.AMOUNT_VALUE);
+	fundTransferPage.inputToDynamicTextbox(driver, "desc", FundTransferPageUI.DESCRIPTION_VALUE);  
+	fundTransferPage.clickToDynamicButton(driver, "AccSubmit");
+	Thread.sleep(2000);  
+	
+	//Verify transfer fund thành công
+	verifyTrue(fundTransferPage.isDynamicPageOrMessageDisplayed(driver, "Fund Transfer Details"));
+	
+	//So sánh giá trị amount
+	verifyEquals(fundTransferPage.getDynamicTextInTable(driver, "Amount"), FundTransferPageUI.AMOUNT_VALUE);
+	 
+	
   }
   
   

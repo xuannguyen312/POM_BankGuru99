@@ -155,6 +155,8 @@ public class AbstractPage {
 			return PageFactoryManager.getEditCustomerPage(driver);
 		case "Withdrawal":
 			return PageFactoryManager.getWithDrawalPage(driver);
+		case "Fund Transfer":
+			return PageFactoryManager.getFundTransferPage(driver);
 			default:
 				return PageFactoryManager.getHomePage(driver);
 		}
