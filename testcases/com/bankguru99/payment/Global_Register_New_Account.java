@@ -43,7 +43,7 @@ public class Global_Register_New_Account extends AbstractTest {
 
 	@AfterClass
 	public void afterClass() {
-		driver.quit();
+		closeBrowserAndDriver(driver);
 	}
 	
 	public int randomNumber() {

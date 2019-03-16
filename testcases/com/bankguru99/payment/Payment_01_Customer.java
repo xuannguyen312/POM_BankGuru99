@@ -263,7 +263,7 @@ public class Payment_01_Customer extends AbstractTest {
   
   @AfterClass
   public void afterClass() {
-	  driver.quit();
+	  closeBrowserAndDriver(driver);
   }
   
   public int randomNumber() {
